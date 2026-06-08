@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treinamento de Direção Defensiva | LogFer</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --dark: #111827;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --primary: #f97316;
+      --primary-dark: #c2410c;
+      --line: #e5e7eb;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: #111827;
+      color: white;
+      padding: 22px 18px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      padding-bottom: 18px;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      background: white;
+      border-radius: 8px;
+      padding: 4px;
+    }
+
+    .brand span {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    nav a {
+      display: block;
+      padding: 10px 12px;
+      color: #d1d5db;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    nav a:hover, nav a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .main {
+      margin-left: 280px;
+      padding: 30px;
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      margin: -30px -30px 28px -30px;
+      background: white;
+      border-bottom: 1px solid var(--line);
+      padding: 14px 30px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width .2s;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 34px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 18px rgba(17,24,39,.05);
+    }
+
+    h1 {
+      font-size: 38px;
+      line-height: 1.15;
+      margin: 0 0 14px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin: 0 0 18px;
+      color: #111827;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin: 20px 0 8px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 900px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #111827, #1f2937);
+      color: white;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -60px;
+      top: -60px;
+      background: rgba(249,115,22,.22);
+      border-radius: 50%;
+    }
+
+    .hero h1, .hero h2 { color: white; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(249,115,22,.14);
+      color: var(--primary-dark);
+      border: 1px solid rgba(249,115,22,.25);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero .badge {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .alert {
+      border-left: 5px solid var(--primary);
+      background: #fff7ed;
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+
+    .danger {
+      border-left-color: var(--danger);
+      background: #fef2f2;
+    }
+
+    .success {
+      border-left-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .warning {
+      border-left-color: var(--warning);
+      background: #fffbeb;
+    }
+
+    ul, ol { padding-left: 22px; }
+
+    li { margin-bottom: 8px; }
+
+    .checklist label {
+      display: block;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    input[type="text"], input[type="date"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 15px;
+      margin-top: 5px;
+      margin-bottom: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .signature-box {
+      height: 110px;
+      border: 2px dashed #9ca3af;
+      border-radius: 12px;
+      background: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      margin: 10px 0 18px;
+      text-align: center;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button, .button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    button.secondary {
+      background: #111827;
+    }
+
+    button.outline {
+      background: white;
+      color: #111827;
+      border: 1px solid var(--line);
+    }
+
+    .mini {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .certificate {
+      border: 8px solid #111827;
+      text-align: center;
+      padding: 38px;
+      background: white;
+    }
+
+    .certificate h2 {
+      font-size: 34px;
+      color: #111827;
+    }
+
+    .certificate .name {
+      font-size: 26px;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin: 22px 0;
+      border-bottom: 1px solid #111827;
+      padding-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f9fafb; }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      .main { margin-left: 0; padding: 18px; }
+      .progress-wrap { margin: -18px -18px 22px -18px; padding: 12px 18px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      section { padding: 24px; }
+      h1 { font-size: 30px; }
+    }
+
+    @media print {
+      .sidebar, .progress-wrap, .actions, button { display: none !important; }
+      .main { margin: 0; padding: 0; }
+      section {
+        box-shadow: none;
+        border: none;
+        page-break-inside: avoid;
+      }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/logo-logfer.png" alt="Logo LogFer" onerror="this.style.display='none'" />
+      <span>LogFer Treinamentos</span>
+    </div>
+    <nav id="menu">
+      <a href="#inicio">Início</a>
+      <a href="#objetivo">Objetivo</a>
+      <a href="#conceito">Direção defensiva</a>
+      <a href="#principios">Princípios</a>
+      <a href="#responsabilidades">Responsabilidades</a>
+      <a href="#velocidade">Velocidade segura</a>
+      <a href="#distancia">Distância segura</a>
+      <a href="#distracoes">Distrações</a>
+      <a href="#carga">Carga em veículos leves</a>
+      <a href="#condicoes">Condições adversas</a>
+      <a href="#checklist">Checklist do veículo</a>
+      <a href="#acidentes">Acidentes</a>
+      <a href="#regras">Regras de ouro</a>
+      <a href="#quiz">Verificação</a>
+      <a href="#termo">Termo de ciência</a>
+      <a href="#certificado">Certificado</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progresso do treinamento</span>
+        <span id="progressText">0%</span>
+      </div>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+
+    <section class="hero" id="inicio">
+      <span class="badge">Treinamento obrigatório</span>
+      <h1>Treinamento de Direção Defensiva e Segurança Viária</h1>
+      <p class="subtitle">
+        Material de capacitação para motoristas e colaboradores da LogFer que utilizam veículos leves, furgões ou veículos da operação.
+      </p>
+      <p><strong>Mensagem central:</strong> dirigir defensivamente é conduzir com prevenção, atenção, responsabilidade e respeito à vida.</p>
+      <div class="actions">
+        <button onclick="window.print()">Imprimir treinamento</button>
+        <button class="secondary" onclick="scrollToSection('termo')">Preencher termo de ciência</button>
+      </div>
+    </section>
+
+    <section id="objetivo">
+      <span class="badge">01</span>
+      <h2>Objetivo do treinamento</h2>
+      <p>
+        Este treinamento tem como objetivo orientar os colaboradores da LogFer sobre práticas de direção defensiva, prevenção de acidentes,
+        cuidado com veículos, conduta segura no trânsito e regras internas para transporte de cargas em veículos leves.
+      </p>
+      <div class="grid grid-3">
+        <div class="card"><strong>Prevenir acidentes</strong>Reduzir riscos para motorista, passageiros, pedestres e terceiros.</div>
+        <div class="card"><strong>Proteger a operação</strong>Evitar multas, danos materiais, atrasos e interrupções.</div>
+        <div class="card"><strong>Reforçar conduta</strong>Padronizar o comportamento esperado dos motoristas LogFer.</div>
+      </div>
+    </section>
+
+    <section id="conceito">
+      <span class="badge">02</span>
+      <h2>O que é direção defensiva?</h2>
+      <p>
+        Direção defensiva é a prática de conduzir o veículo de maneira preventiva, antecipando riscos e evitando acidentes mesmo quando
+        outros motoristas adotam comportamentos inadequados ou quando as condições da via são desfavoráveis.
+      </p>
+      <div class="alert">
+        <strong>Na prática:</strong> não basta dirigir corretamente. O motorista defensivo dirige considerando que outras pessoas podem errar.
+      </div>
+    </section>
+
+    <section id="principios">
+      <span class="badge">03</span>
+      <h2>Princípios da direção defensiva</h2>
+      <div class="grid grid-2">
+        <div class="card"><strong>1. Conhecimento</strong>Conhecer e aplicar corretamente as leis e regras de trânsito.</div>
+        <div class="card"><strong>2. Habilidade</strong>Dominar o veículo em manobras, frenagens, curvas e situações adversas.</div>
+        <div class="card"><strong>3. Atenção constante</strong>Manter foco total no trânsito, na via, nos pedestres e nos demais veículos.</div>
+        <div class="card"><strong>4. Previsão</strong>Antecipar riscos e observar além do óbvio.</div>
+        <div class="card"><strong>5. Decisão</strong>Tomar decisões rápidas, seguras e coerentes.</div>
+        <div class="card"><strong>6. Ação com convicção</strong>Executar manobras com firmeza, sem agressividade e sem improviso.</div>
+      </div>
+    </section>
+
+    <section id="responsabilidades">
+      <span class="badge">04</span>
+      <h2>Responsabilidades do motorista LogFer</h2>
+      <ul>
+        <li>Conduzir o veículo respeitando a legislação de trânsito e as normas internas da empresa.</li>
+        <li>Usar cinto de segurança e exigir o uso por todos os ocupantes.</li>
+        <li>Não utilizar celular durante a condução.</li>
+        <li>Realizar checklist do veículo antes da utilização.</li>
+        <li>Comunicar qualquer falha mecânica, dano ou irregularidade.</li>
+        <li>Transportar cargas somente no local apropriado, respeitando capacidade, fixação e segurança.</li>
+        <li>Preservar a imagem da LogFer no trânsito.</li>
+      </ul>
+      <div class="alert warning">
+        O veículo identifica a empresa. A forma como ele é conduzido comunica profissionalismo ou risco.
+      </div>
+    </section>
+
+    <section id="velocidade">
+      <span class="badge">05</span>
+      <h2>Velocidade segura</h2>
+      <p>
+        Velocidade segura não é apenas respeitar a placa. É ajustar a velocidade às condições reais do trânsito, da via, do clima,
+        da carga transportada e do estado do veículo.
+      </p>
+      <table>
+        <tr><th>Situação</th><th>Conduta defensiva</th></tr>
+        <tr><td>Chuva</td><td>Reduzir velocidade, ampliar distância e evitar frenagens bruscas.</td></tr>
+        <tr><td>Neblina</td><td>Usar luz baixa, reduzir velocidade e evitar ultrapassagens.</td></tr>
+        <tr><td>Via irregular</td><td>Reduzir velocidade e evitar manobras repentinas.</td></tr>
+        <tr><td>Veículo carregado</td><td>Considerar maior distância de frenagem e menor agilidade.</td></tr>
+      </table>
+    </section>
+
+    <section id="distancia">
+      <span class="badge">06</span>
+      <h2>Distância segura</h2>
+      <p>
+        Manter distância segura é uma das formas mais simples de evitar colisões traseiras.
+      </p>
+      <div class="alert success">
+        <strong>Técnica dos 3 segundos:</strong><br>
+        Escolha um ponto fixo. Quando o veículo da frente passar por ele, conte: “mil e um, mil e dois, mil e três”.
+        Se você chegar ao ponto antes de terminar a contagem, está próximo demais.
+      </div>
+      <p>
+        Em chuva, estrada ruim, neblina, trânsito pesado ou veículo carregado, aumente essa distância.
+      </p>
+    </section>
+
+    <section id="distracoes">
+      <span class="badge">07</span>
+      <h2>Distrações ao volante</h2>
+      <p>Ao dirigir, evite qualquer ação que reduza sua atenção ou tire as mãos do volante.</p>
+      <div class="grid grid-2">
+        <div class="card">
+          <strong>Evite durante a condução</strong>
+          <ul>
+            <li>Usar celular.</li>
+            <li>Comer ou beber.</li>
+            <li>Ajustar rádio, mídia ou ar-condicionado.</li>
+            <li>Apanhar objetos caídos.</li>
+            <li>Colocar objetos soltos no painel.</li>
+            <li>Virar o corpo para falar com passageiro.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Conduta correta</strong>
+          <ul>
+            <li>Programe rota antes de sair.</li>
+            <li>Estacione em local seguro para atender ligação.</li>
+            <li>Faça ajustes antes de iniciar o trajeto.</li>
+            <li>Evite conversas que tirem o foco do trânsito.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert danger">
+        O uso de celular ao volante é uma das maiores causas de perda de atenção e aumenta significativamente o risco de acidente.
+      </div>
+    </section>
+
+    <section id="carga">
+      <span class="badge">08</span>
+      <h2>Transporte de carga em veículos leves e furgões</h2>
+      <p>
+        A LogFer adota regra interna preventiva: cargas devem ser transportadas somente no compartimento adequado do veículo,
+        nunca sobre bancos de passageiros ou soltas dentro da cabine.
+      </p>
+
+      <div class="alert danger">
+        <strong>Regra LogFer:</strong> é proibido transportar carga sobre bancos destinados a passageiros.
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <strong>Permitido</strong>
+          <ul>
+            <li>Carga no compartimento de carga do furgão.</li>
+            <li>Carga organizada e fixada.</li>
+            <li>Respeito ao limite de peso do veículo.</li>
+            <li>Manter visão, retrovisores e comandos livres.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Proibido</strong>
+          <ul>
+            <li>Carga nos bancos de passageiros.</li>
+            <li>Carga solta na cabine.</li>
+            <li>Objetos no painel.</li>
+            <li>Transporte acima da capacidade do veículo.</li>
+            <li>Improvisos que prejudiquem segurança ou estabilidade.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Base legal e operacional</h3>
+      <p>
+        O Código de Trânsito Brasileiro prevê que o transporte de carga em veículos destinados ao transporte de passageiros
+        somente pode ocorrer conforme normas específicas e sem comprometer a segurança. A política interna da LogFer é mais restritiva:
+        como os veículos utilizados são furgões, a carga deve ficar exclusivamente no espaço de carga.
+      </p>
+    </section>
+
+    <section id="condicoes">
+      <span class="badge">09</span>
+      <h2>Condições adversas</h2>
+      <div class="grid grid-2">
+        <div class="card"><strong>Via</strong>Buracos, animais, falta de acostamento, pista estreita, obras e sinalização precária.</div>
+        <div class="card"><strong>Condutor</strong>Cansaço, estresse, sono, pressa, medicamento, dor ou alteração emocional.</div>
+        <div class="card"><strong>Tempo</strong>Chuva, granizo, neblina, fumaça, vento e baixa visibilidade.</div>
+        <div class="card"><strong>Trânsito</strong>Congestionamento, motociclistas, ciclistas, pedestres, carroças e disputas por espaço.</div>
+        <div class="card"><strong>Luz</strong>Ofuscamento, penumbra, pôr do sol, farol alto e falta de iluminação.</div>
+        <div class="card"><strong>Veículo</strong>Pneus ruins, freios desregulados, retrovisores danificados e falhas mecânicas.</div>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <span class="badge">10</span>
+      <h2>Checklist antes de sair com o veículo</h2>
+      <p>Antes de iniciar o trajeto, o motorista deve verificar:</p>
+      <div class="checklist">
+        <label><input type="checkbox"> Pneus em bom estado e calibrados.</label>
+        <label><input type="checkbox"> Faróis, lanternas, setas e luz de freio funcionando.</label>
+        <label><input type="checkbox"> Freios funcionando normalmente.</label>
+        <label><input type="checkbox"> Retrovisores ajustados e íntegros.</label>
+        <label><input type="checkbox"> Para-brisa, limpadores e nível de água adequados.</label>
+        <label><input type="checkbox"> Carga posicionada e fixada corretamente.</label>
+        <label><input type="checkbox"> Documentos, CNH e condições gerais conferidas.</label>
+      </div>
+      <div class="alert warning">
+        Se houver falha relevante, o veículo não deve sair para operação até que o gestor seja comunicado e oriente a liberação.
+      </div>
+    </section>
+
+    <section id="acidentes">
+      <span class="badge">11</span>
+      <h2>Procedimento em caso de acidente ou incidente</h2>
+      <ol>
+        <li>Preserve a vida e verifique se há feridos.</li>
+        <li>Sinalize o local com segurança.</li>
+        <li>Acione socorro ou autoridade competente quando necessário.</li>
+        <li>Comunique imediatamente o gestor responsável.</li>
+        <li>Registre fotos do local, veículos, placas e danos, se for seguro fazer isso.</li>
+        <li>Não assuma culpa no local sem orientação da empresa.</li>
+        <li>Aguarde instruções da LogFer.</li>
+      </ol>
+      <div class="alert danger">
+        Nunca discuta no local do acidente. Segurança, comunicação e registro correto são prioridades.
+      </div>
+    </section>
+
+    <section id="regras">
+      <span class="badge">12</span>
+      <h2>Regras de ouro da direção defensiva LogFer</h2>
+      <div class="grid grid-2">
+        <div class="card"><strong>1.</strong> Respeite as leis de trânsito.</div>
+        <div class="card"><strong>2.</strong> Use cinto de segurança sempre.</div>
+        <div class="card"><strong>3.</strong> Não use celular dirigindo.</div>
+        <div class="card"><strong>4.</strong> Mantenha distância segura.</div>
+        <div class="card"><strong>5.</strong> Adapte a velocidade à condição real.</div>
+        <div class="card"><strong>6.</strong> Faça checklist do veículo.</div>
+        <div class="card"><strong>7.</strong> Transporte carga apenas no compartimento correto.</div>
+        <div class="card"><strong>8.</strong> Dê preferência à vida.</div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <span class="badge">13</span>
+      <h2>Verificação rápida de aprendizagem</h2>
+      <p>Marque as alternativas corretas antes de preencher o termo de ciência.</p>
+      <div class="checklist">
+        <label><input type="checkbox"> O motorista defensivo antecipa riscos, mesmo quando os outros erram.</label>
+        <label><input type="checkbox"> A carga deve ser transportada apenas no compartimento adequado do furgão.</label>
+        <label><input type="checkbox"> O uso de celular durante a condução deve ser evitado/proibido.</label>
+        <label><input type="checkbox"> Em chuva ou veículo carregado, a distância de segurança deve aumentar.</label>
+        <label><input type="checkbox"> Falhas mecânicas devem ser comunicadas antes da saída para operação.</label>
+      </div>
+    </section>
+
+    <section id="termo">
+      <span class="badge">14</span>
+      <h2>Termo de ciência do treinamento</h2>
+      <p>
+        Declaro que participei do Treinamento de Direção Defensiva e Segurança Viária da LogFer,
+        compreendi as orientações apresentadas e estou ciente das minhas responsabilidades na condução de veículos da empresa.
+      </p>
+
+      <label>Nome completo</label>
+      <input type="text" id="nome" placeholder="Digite o nome do colaborador" oninput="atualizarCertificado()" />
+
+      <label>CPF</label>
+      <input type="text" id="cpf" placeholder="Digite o CPF" />
+
+      <label>Função</label>
+      <input type="text" id="funcao" placeholder="Digite a função" />
+
+      <label>Data</label>
+      <input type="date" id="data" />
+
+      <label>Observações</label>
+      <textarea id="obs" placeholder="Campo opcional"></textarea>
+
+      <label>Assinatura do colaborador</label>
+      <div class="signature-box">
+        Assinatura manual após impressão ou assinatura digital em ferramenta própria.
+      </div>
+
+      <div class="actions">
+        <button onclick="window.print()">Imprimir termo</button>
+        <button class="secondary" onclick="scrollToSection('certificado')">Ir para certificado</button>
+      </div>
+    </section>
+
+    <section id="certificado">
+      <span class="badge">15</span>
+      <h2>Certificado de conclusão</h2>
+      <div class="certificate">
+        <h2>Certificado</h2>
+        <p>Certificamos que</p>
+        <div class="name" id="nomeCertificado">Nome do colaborador</div>
+        <p>concluiu o</p>
+        <h3>Treinamento de Direção Defensiva e Segurança Viária</h3>
+        <p>realizado pela LogFer, com orientações sobre condução segura, prevenção de acidentes, checklist do veículo e transporte correto de cargas.</p>
+        <p class="mini">Este certificado deve ser impresso ou salvo em PDF juntamente com o termo de ciência.</p>
+      </div>
+      <div class="actions">
+        <button onclick="window.print()">Imprimir certificado</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function atualizarCertificado() {
+      const nome = document.getElementById('nome').value.trim();
+      document.getElementById('nomeCertificado').textContent = nome || 'Nome do colaborador';
+    }
+
+    function updateProgress() {
+      const sections = document.querySelectorAll('main section');
+      let viewed = 0;
+      const trigger = window.innerHeight * 0.55;
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < trigger) viewed++;
+      });
+
+      const percent = Math.min(100, Math.round((viewed / sections.length) * 100));
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressText').textContent = percent + '%';
+
+      const links = document.querySelectorAll('nav a');
+      let current = '';
+      sections.forEach(section => {
+        if (section.getBoundingClientRect().top < 150) {
+          current = section.id;
+        }
+      });
+
+      links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    document.addEventListener('scroll', updateProgress);
+    document.addEventListener('DOMContentLoaded', () => {
+      const hoje = new Date().toISOString().split('T')[0];
+      document.getElementById('data').value = hoje;
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
